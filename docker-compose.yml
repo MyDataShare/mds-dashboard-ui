@@ -1,0 +1,22 @@
+version: "3.0"
+
+services:
+    # The development server with volume mounts
+    devserver:
+        build:
+            context: ./
+        ports:
+            - 3002:3002
+        stdin_open: true # This keeps `npm start` from exiting immediately
+        volumes:
+            - ./:/usr/src/app
+
+    # The built app served by nginx
+    client:
+        build:
+            context: ./
+            dockerfile: deploy.Dockerfile
+        ports:
+            - 5002:5000
+        env_file:
+            - .env
